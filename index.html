@@ -147,7 +147,7 @@
                     <li>
                       <i class="bi bi-chevron-right"></i>
                       <strong>Website:</strong>
-                      <a href="https://designeranddeveloper.000webhostapp.com/" target="_blank" rel="noopener noreferrer"
+                      <a href="https://azfarazam122.github.io/portfolio/index.php" target="_blank" rel="noopener noreferrer"
                         >DesignerAndDeveloper.com</a
                       >
                       <!-- <span></span> -->
@@ -174,7 +174,7 @@
                     </li>
                     <li>
                       <i class="bi bi-chevron-right"></i>
-                      <strong>PhEmailone:</strong>
+                      <strong>Email:</strong>
                       <span>azfarazam@gmail.com</span>
                     </li>
                     <li>
@@ -547,7 +547,7 @@
                 <li data-filter=".filter-management-system">Management Systems</li>
                 <li data-filter=".filter-web">Websites</li>
                 <li data-filter=".filter-calculators">Calculators</li>
-                <li data-filter=".filter-mobile-app">Mobile-App</li>
+                <!-- <li data-filter=".filter-mobile-app">Mobile-App</li> -->
               </ul>
             </div>
           </div>
@@ -997,7 +997,7 @@
         <div class="container">
           <div class="section-title">
             <h2>Testimonials</h2>
-            <h5>We are Proud to have these Happy Clients.</h5>
+            <h5>Proud to have these Happy Clients.</h5>
             <p>
               Our clients are so much satisfied by working with us. The 100% satisfaction ratio and tremendous respect showcase
               the affection of clients towards my company. Each client is like a star in the constellation, without it the beauty
@@ -1232,11 +1232,28 @@
       }
 
       function warning() {
+        //
         Swal.fire(
           "Confidential!",
-          "These Management Systems are Confidential! If you want to view these Management Systems Contact me !",
+          "These Management Systems are Confidential! If you want to view these Management Systems  Contact me !",
           "info"
         );
+
+        Swal.fire({
+          title: "<strong>Confidential</strong>",
+          icon: "info",
+          html:
+            `These Management Systems are Confidential! If you want to view these Management Systems` +
+            `<br><a href="#contact" onclick="setTimeout(function() { 
+                  swal.close();
+              }, 500);" 
+                class="text-white text-decoration-underline scrollto">
+                <i class="bx bx-envelope"></i> <span>Contact me</span>
+              </a>`,
+          showCloseButton: true,
+          showCancelButton: false,
+          focusConfirm: false,
+        });
       }
     </script>
 
@@ -1255,7 +1272,7 @@
         };
 
         emailjs.send("service_dep5z8a", "template_mfop5qt", params).then(function (res) {
-          Swal.fire("Thank You!", "Email Send Successfully", "success");
+          Swal.fire("Thank You!", "Email Send Successfully. I will get back to you soon.", "success");
         });
       }
     </script>
