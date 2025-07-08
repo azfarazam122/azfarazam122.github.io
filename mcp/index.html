@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>mcp</title>
+
+  <!-- Bootstrap CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?display=swap&family=Inter%3Awght%40400%3B500%3B700%3B900&family=Noto+Sans%3Awght%40400%3B500%3B700%3B900" />
+
+  <!-- Custom CSS with new color scheme -->
+  <style>
+    :root {
+      --app-primary-green: #108a73;
+      --app-dark: #000000;
+      --app-secondary: #6c757d;
+      --app-light-gray-bg: #f8f9fa;
+      --app-border-gray: #dee2e6;
+      --border-color-light: #dee2e6;
+    }
+
+    body {
+      font-family: Inter, "Noto Sans", sans-serif;
+      background-color: #fff;
+      color: var(--app-dark);
+    }
+
+    /* Typography Helpers to match Tailwind */
+    .fw-medium {
+      font-weight: 500;
+    }
+
+    .fw-black {
+      font-weight: 900;
+    }
+
+    .text-dark-custom {
+      color: var(--app-dark);
+    }
+
+    .text-secondary-custom {
+      color: var(--app-secondary);
+    }
+
+    .fs-sm {
+      font-size: 0.875rem;
+    }
+
+    /* text-sm */
+    .fs-lg-custom {
+      font-size: 1.125rem;
+    }
+
+    /* text-lg */
+    .fs-22px {
+      font-size: 22px;
+    }
+
+    .fs-13px {
+      font-size: 13px;
+    }
+
+    .tracking-tight {
+      letter-spacing: -0.015em;
+    }
+
+    .tracking-tighter {
+      letter-spacing: -0.033em;
+    }
+
+    .tracking-wide {
+      letter-spacing: 0.015em;
+    }
+
+    .lh-tight {
+      line-height: 1.25;
+    }
+
+    /* Custom Sizing & Spacing */
+    .header-padding {
+      padding-left: 2.5rem;
+      padding-right: 2.5rem;
+    }
+
+    .main-content-padding {
+      padding-left: 10rem;
+      padding-right: 10rem;
+    }
+
+    .h-10 {
+      height: 2.5rem;
+    }
+
+    .icon-size-4 {
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .icon-size-2 {
+      width: 0.5rem;
+      height: 0.5rem;
+    }
+
+    .timeline-line {
+      width: 1.5px;
+      background-color: var(--app-border-gray);
+    }
+
+    /* Custom Button Styles */
+    .btn-primary-custom {
+      background-color: var(--app-primary-green);
+      color: #fff;
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.015em;
+      padding: 0 1rem;
+      height: 2.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+    }
+
+    .btn-primary-custom:hover {
+      background-color: #0c6b58;
+      /* Slightly darker green for hover */
+      color: #fff;
+    }
+
+    .btn-light-custom {
+      background-color: var(--app-light-gray-bg);
+      color: var(--app-dark);
+      border: 1px solid var(--app-border-gray);
+      border-radius: 9999px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.015em;
+      padding: 0 1rem;
+      height: 2.5rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-light-custom:hover {
+      background-color: #e9ecef;
+      /* Slightly darker for hover */
+      color: var(--app-dark);
+    }
+
+    /* NEW: Full Screen Hero Section */
+    .hero-section-wrapper {
+      height: 100vh;
+      width: 100%;
+      background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%), url("images/hero-bg.jpg");
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      /* Vertically center */
+      justify-content: center;
+      /* Horizontally center */
+      text-align: center;
+      /* Center the text and button inside */
+    }
+
+    .hero-content-container {
+      width: 100%;
+      max-width: 960px;
+      padding-bottom: 5rem;
+    }
+
+    .hero-content-container h1 {
+      font-size: 3rem;
+    }
+
+    .hero-content-container h2 {
+      font-size: 1rem;
+    }
+
+    .hero-content-container .btn-primary-custom {
+      height: 3rem;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+      font-size: 1rem;
+    }
+
+    /* Grid Layouts to replace Tailwind's specific grid setup */
+    .card-grid-a,
+    .card-grid-b,
+    .card-grid-c {
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .mcp-intergrations {
+      display: grid;
+      gap: 7rem;
+    }
+
+    .platform-card {
+      width: 300px;
+      height: auto;
+      padding: 10px;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      border-radius: 25px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    }
+
+    .card-grid-a {
+      grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+    }
+
+    .card-grid-b {
+      grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+    }
+
+    .card-grid-c {
+      grid-template-columns: repeat(auto-fit, minmax(158px, 1fr));
+    }
+
+    .how-it-works-grid {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 0 0.5rem;
+    }
+
+    /* Helper for background images */
+    .bg-image-cover {
+      width: 100%;
+      background-position: center;
+      background-repeat: no-repeat;
+      aspect-ratio: 1/1;
+      background-size: cover;
+    }
+
+    /* Card styles */
+    .benefit-card {
+      border: 1px solid var(--app-border-gray);
+      background-color: #fff;
+    }
+
+    .pricing-card {
+      border: 1px solid var(--app-border-gray);
+    }
+
+    /* Responsive styles to mimic Tailwind's @container queries */
+    @media (max-width: 767.98px) {
+      .hero-content-container h1 {
+        font-size: 2.25rem;
+      }
+
+      .hero-content-container h2 {
+        font-size: 0.875rem;
+      }
+    }
+
+    /* Large screen padding for main content */
+    @media (min-width: 1200px) {
+      .main-content-padding {
+        padding-left: 10rem;
+        padding-right: 10rem;
+      }
+    }
+
+    @media (max-width: 1199.98px) {
+      .main-content-padding {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .header-padding {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .nav-links {
+        display: none !important;
+        /* Hide nav links on smaller screens for simplicity */
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="d-flex flex-column" style="overflow-x: hidden">
+
+    <!-- Full Screen Hero Section -->
+    <div class="hero-section-wrapper">
+      <div class="container">
+        <div class="hero-content-container mx-auto">
+          <div class="d-flex flex-column gap-2">
+            <p class="display-1 text-start text-white fw-black lh-tight tracking-tighter">Unlock the Power of MCP Integration</p>
+            <h5 class="text-start text-white fw-normal">
+              Seamlessly integrate MCP into your LLM applications for enhanced performance, scalability, and reliability. Elevate your AI solutions with our
+              expert integration services.
+            </h5>
+          </div>
+          <div class="text-start mt-3">
+            <button class="btn btn-outline-light rounded-5 mt-4 fs-5" style="width: 300px;"><span class="text-truncate">Get Started</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-grow-1 d-flex justify-content-center py-5 main-content-padding">
+      <div class="d-flex flex-column" style="max-width: 960px; width: 100%">
+        <!-- Sections -->
+        <h2 class="text-dark-custom fs-22px fw-bold lh-tight tracking-tight px-4 pb-3 pt-5">Comprehensive MCP Integration Services</h2>
+        <p class="text-dark-custom fw-normal pb-3 pt-1 px-4">
+          Our MCP integration service provides a comprehensive suite of features designed to enhance the capabilities of your LLM applications. From rapid
+          deployment to robust security, we've got you covered. We specialize in integrating with a wide range of platforms to ensure your LLM applications
+          are fully connected and optimized.
+        </p>
+
+        <h2 class="text-dark-custom fs-22px fw-bold lh-tight tracking-tight px-4 pb-3 pt-5">Integration with Key Platforms</h2>
+        <div id="platform-grid" class="card-grid-a p-4 mcp-intergrations">
+          <!-- Card 1 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/google.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">
+                Google Workspace <br />
+                (Gmail & Calendar)
+              </p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Integrate with Gmail for email management and Calendar for scheduling, enhancing productivity and workflow automation. Use cases include
+                automated email responses and scheduling reminders.
+              </p>
+            </div>
+          </div>
+          <!-- Card 2 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/shopify.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Shopify</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Connect your LLM applications with Shopify to streamline e-commerce operations, personalize customer experiences, and automate tasks. Benefits
+                include improved customer engagement and sales.
+              </p>
+            </div>
+          </div>
+          <!-- Card 3 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/bing.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">
+                Search Engines <br />
+                (Google & Bing)
+              </p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Access real-time search data from Google and Bing to provide up-to-date information and enhance the accuracy of your LLM applications. Use
+                cases include real-time data retrieval for enhanced decision-making.
+              </p>
+            </div>
+          </div>
+          <!-- Card 4 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/sql.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">
+                Databases <br />
+                (MySQL & BigQuery)
+              </p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Seamlessly integrate with various databases, including PostgreSQL, MySQL, and BigQuery, for efficient data retrieval and management. Benefits
+                include streamlined data access and improved application performance.
+              </p>
+            </div>
+          </div>
+          <!-- Card 5 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/drive.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Google Drive</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Connect to Google Drive for easy access to documents, spreadsheets, and other files, enabling efficient data processing and analysis. Use
+                cases include automated document summarization and data extraction.
+              </p>
+            </div>
+          </div>
+          <!-- Card 6 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card d-none">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/github.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">GitHub</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Integrate with GitHub to manage code repositories, automate workflows, and enhance collaboration within your development teams. Benefits
+                include improved code management and team productivity.
+              </p>
+            </div>
+          </div>
+          <!-- Card 7 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card d-none">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/slack.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Slack</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Integrate with Slack to streamline team communication and automate workflows. Use cases include automated notifications and task management
+                within team channels.
+              </p>
+            </div>
+          </div>
+          <!-- Card 8 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card d-none">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/discord.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Discord</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Enable your AI agent to interact with Discord channels, send real-time messages, and manage community interactions, all while respecting user
+                privacy and server roles. Perfect for chatbots and automated support.
+              </p>
+            </div>
+          </div>
+          <!-- Card 9 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card d-none">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/world_bank.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">World Bank API</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Provide your application with access to global development indicators, including data on GDP, population, and health, for powerful data
+                analysis, reporting, and generating socioeconomic insights.
+              </p>
+            </div>
+          </div>
+          <!-- Card 10 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card d-none">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/zapier.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Zapier</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Connect your AI to over 7,000 apps. This allows your assistant to automate complex workflows, from sending emails and managing CRMs to
+                creating tasks, turning conversation into direct action across platforms.
+              </p>
+            </div>
+          </div>
+          <!-- Card 11 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card d-none">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/twilio.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Twilio</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Empower your AI to handle real-world communication by sending SMS, making voice calls, and managing notifications. Ideal for triggering
+                alerts, two-factor authentication, or automating customer updates.
+              </p>
+            </div>
+          </div>
+          <!-- Card 13 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card d-none">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/atlassian.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Atlassian (Jira & Confluence)</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Connect your AI to your project management workflow. Summarize Jira tickets, create new issues, or search Confluence pages directly from your
+                application to streamline development and documentation.
+              </p>
+            </div>
+          </div>
+          <!-- Card 14 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card d-none">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/make.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Make</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Make.com MCP allows your AI assistant to connect with thousands of apps and automate workflows using a powerful visual interface. It helps
+                bridge your Laravel application with tools like Gmail, Google Sheets, Slack, HubSpot, and more without writing complex code.
+              </p>
+            </div>
+          </div>
+          <!-- Card 15 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card d-none">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/postman.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Postman</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Integrates with Postman's API management platform to enable automated API testing, documentation, and workflow management for developers and
+                QA engineers.
+              </p>
+            </div>
+          </div>
+          <!-- Card 16 -->
+          <div class="d-flex flex-column gap-3 pb-3 platform-card d-none">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/elevenlabs.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">ElevenLabs</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Provides AI agents with programmatic access to ElevenLabs' advanced text-to-speech capabilities, enabling natural sounding speech synthesis.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Show More/Less Button Container -->
+        <div id="toggle-cards-container" class="text-center mt-3">
+          <button id="show-more-btn" style="width: 200px" class="btn rounded-5 btn-outline-dark">Show More</button>
+          <button id="show-less-btn" style="width: 200px" class="btn rounded-5 btn-outline-dark d-none">Show Less</button>
+        </div>
+
+        <!-- JavaScript for the Show More/Less Buttons -->
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            const cardsToShow = 5;
+            const container = document.getElementById("toggle-cards-container");
+            const showMoreBtn = document.getElementById("show-more-btn");
+            const showLessBtn = document.getElementById("show-less-btn");
+            const allCards = Array.from(document.querySelectorAll("#platform-grid .platform-card"));
+
+            function updateCardVisibility() {
+              allCards.forEach((card, index) => {
+                if (index >= cardsToShow) {
+                  card.classList.add("d-none");
+                }
+              });
+            }
+
+            updateCardVisibility();
+
+            if (allCards.length <= cardsToShow) {
+              if (container) container.style.display = "none";
+              return;
+            }
+
+            showMoreBtn.addEventListener("click", function() {
+              allCards.forEach((card) => card.classList.remove("d-none"));
+              showMoreBtn.classList.add("d-none");
+              showLessBtn.classList.remove("d-none");
+            });
+
+            showLessBtn.addEventListener("click", function() {
+              updateCardVisibility();
+              showLessBtn.classList.add("d-none");
+              showMoreBtn.classList.remove("d-none");
+            });
+          });
+        </script>
+
+        <h2 class="text-dark-custom fs-22px fw-bold lh-tight tracking-tight px-4 pb-3 pt-5"></h2>
+        <div class="d-flex flex-column gap-4 px-4 py-5 empower-section">
+          <div class="d-flex flex-column gap-3">
+            <h1 class="text-dark-custom fw-bold lh-tight tracking-tighter mb-0" style="max-width: 720px; font-size: 32px">
+              Empowering Your LLM Applications
+            </h1>
+            <p class="text-dark-custom fw-normal" style="max-width: 720px">
+              Our MCP integration service provides a comprehensive suite of features designed to enhance the capabilities of your LLM applications. From rapid
+              deployment to robust security, we've got you covered.
+            </p>
+          </div>
+          <div class="card-grid-b p-0">
+            <!-- Benefit Card 1 -->
+            <div class="d-flex flex-column flex-grow-1 gap-3 rounded-3 p-4 benefit-card">
+              <div class="text-dark-custom">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M173.66,98.34a8,8,0,0,1,0,11.32l-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35A8,8,0,0,1,173.66,98.34ZM232,128A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"></path>
+                </svg>
+              </div>
+              <div class="d-flex flex-column gap-1">
+                <h2 class="text-dark-custom fs-6 fw-bold lh-tight">Proven Expertise</h2>
+                <p class="text-secondary-custom fs-sm fw-normal">
+                  Our team has extensive experience in MCP integration, ensuring seamless and efficient connectivity with various platforms.
+                </p>
+              </div>
+            </div>
+            <!-- Benefit Card 2 -->
+            <div class="d-flex flex-column flex-grow-1 gap-3 rounded-3 p-4 benefit-card">
+              <div class="text-dark-custom">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"></path>
+                </svg>
+              </div>
+              <div class="d-flex flex-column gap-1">
+                <h2 class="text-dark-custom fs-6 fw-bold lh-tight">Customized Solutions</h2>
+                <p class="text-secondary-custom fs-sm fw-normal">
+                  We tailor our integration services to meet your specific needs, ensuring optimal performance and functionality for your LLM applications.
+                </p>
+              </div>
+            </div>
+            <!-- Benefit Card 3 -->
+            <div class="d-flex flex-column flex-grow-1 gap-3 rounded-3 p-4 benefit-card">
+              <div class="text-dark-custom">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M208,40H48A16,16,0,0,0,32,56v58.78c0,89.61,75.82,119.34,91,124.39a15.53,15.53,0,0,0,10,0c15.2-5.05,91-34.78,91-124.39V56A16,16,0,0,0,208,40Zm0,74.79c0,78.42-66.35,104.62-80,109.18-13.53-4.51-80-30.69-80-109.18V56H208ZM82.34,141.66a8,8,0,0,1,11.32-11.32L112,148.68l50.34-50.34a8,8,0,0,1,11.32,11.32l-56,56a8,8,0,0,1-11.32,0Z"></path>
+                </svg>
+              </div>
+              <div class="d-flex flex-column gap-1">
+                <h2 class="text-dark-custom fs-6 fw-bold lh-tight">Security Focus</h2>
+                <p class="text-secondary-custom fs-sm fw-normal">
+                  We prioritize security, implementing robust measures to protect your data and ensure the integrity of your LLM applications.
+                </p>
+              </div>
+            </div>
+            <!-- Benefit Card 4 -->
+            <div class="d-flex flex-column flex-grow-1 gap-3 rounded-3 p-4 benefit-card">
+              <div class="text-dark-custom">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm39.1,131.79a47.84,47.84,0,0,0,0-55.58l28.5-28.49a87.83,87.83,0,0,1,0,112.56ZM96,128a32,32,0,1,1,32,32A32,32,0,0,1,96,128Zm88.28-67.6L155.79,88.9a47.84,47.84,0,0,0-55.58,0L71.72,60.4a87.83,87.83,0,0,1,112.56,0ZM60.4,71.72l28.5,28.49a47.84,47.84,0,0,0,0,55.58L60.4,184.28a87.83,87.83,0,0,1,0-112.56ZM71.72,195.6l28.49-28.5a47.84,47.84,0,0,0,55.58,0l28.49,28.5a87.83,87.83,0,0,1-112.56,0Z"></path>
+                </svg>
+              </div>
+              <div class="d-flex flex-column gap-1">
+                <h2 class="text-dark-custom fs-6 fw-bold lh-tight">Ongoing Support</h2>
+                <p class="text-secondary-custom fs-sm fw-normal">
+                  We provide ongoing support and maintenance to ensure your integrated systems continue to operate smoothly and efficiently.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="text-dark-custom fs-22px fw-bold lh-tight tracking-tight px-4 pb-3 pt-5">Real-World Applications</h2>
+        <div class="card-grid-c p-4">
+          <!-- Real-world Card 1 -->
+          <div class="d-flex flex-column gap-3 pb-3">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/customer-service.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Customer Service Automation</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Enhance customer support with AI-powered chatbots and virtual assistants. Provide instant, accurate responses and improve customer
+                satisfaction.
+              </p>
+            </div>
+          </div>
+          <!-- Real-world Card 2 -->
+          <div class="d-flex flex-column gap-3 pb-3">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/content-generation.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Content Generation</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Generate high-quality content for various applications, including marketing materials, articles, and social media posts. Save time and
+                resources with automated content creation.
+              </p>
+            </div>
+          </div>
+          <!-- Real-world Card 3 -->
+          <div class="d-flex flex-column gap-3 pb-3">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/data-analysis.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Data Analysis and Insights</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Extract valuable insights from large datasets using LLM-powered analysis tools. Make data-driven decisions and gain a competitive edge.
+              </p>
+            </div>
+          </div>
+          <!-- Real-world Card 4 -->
+          <div class="d-flex flex-column gap-3 pb-3">
+            <div class="bg-image-cover rounded-3" style="background-image: url('images/personal-recommendation.png')"></div>
+            <div>
+              <p class="text-dark-custom fw-medium mb-1">Personalized Recommendations</p>
+              <p class="text-secondary-custom fs-sm fw-normal m-0">
+                Deliver personalized recommendations to users based on their preferences and behavior. Improve user engagement and drive conversions.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="text-dark-custom fs-22px fw-bold lh-tight tracking-tight px-4 pb-3 pt-5">Security Considerations</h2>
+        <p class="text-dark-custom fw-normal pb-3 pt-1 px-4">
+          Security is paramount in MCP integration. We implement measures such as secure communication protocols, access controls, and data encryption to
+          protect sensitive information and ensure the integrity of your LLM applications. Our team follows industry best practices to mitigate potential
+          security risks.
+        </p>
+
+        <h2 class="text-dark-custom fs-22px fw-bold lh-tight tracking-tight px-4 pb-3 pt-5">How It Works</h2>
+        <div class="how-it-works-grid px-4">
+          <!-- Step 1 -->
+          <div class="d-flex flex-column align-items-center gap-1 pt-4">
+            <div class="icon-size-2 rounded-circle bg-black"></div>
+            <div class="timeline-line flex-grow-1"></div>
+          </div>
+          <div class="py-3">
+            <p class="text-dark-custom fw-medium m-0">1. Discovery and Scoping</p>
+            <p class="text-secondary-custom m-0">
+              We begin with a detailed consultation to understand your existing LLM applications, data sources, and specific goals. This includes identifying
+              the key platforms and tools you need to integrate.
+            </p>
+          </div>
+          <!-- Step 2 -->
+          <div class="d-flex flex-column align-items-center gap-1">
+            <div class="timeline-line flex-grow-1"></div>
+            <div class="icon-size-2 rounded-circle bg-black"></div>
+            <div class="timeline-line flex-grow-1"></div>
+          </div>
+          <div class="py-3">
+            <p class="text-dark-custom fw-medium m-0">2. Context Schema and Tool Design</p>
+            <p class="text-secondary-custom m-0">
+              Our team designs a robust context schema that defines how information flows between your LLM and external tools. We meticulously map out the
+              functions and API endpoints that the MCP will utilize.
+            </p>
+          </div>
+          <!-- Step 3 -->
+          <div class="d-flex flex-column align-items-center gap-1">
+            <div class="timeline-line flex-grow-1"></div>
+            <div class="icon-size-2 rounded-circle bg-black"></div>
+            <div class="timeline-line flex-grow-1"></div>
+          </div>
+          <div class="py-3">
+            <p class="text-dark-custom fw-medium m-0">3. Integration and Development</p>
+            <p class="text-secondary-custom m-0">
+              Our developers handle the core integration of the MCP into your system, writing the necessary adaptors and handlers to ensure seamless
+              communication and optimal performance with your specified tools.
+            </p>
+          </div>
+          <!-- Step 4 -->
+          <div class="d-flex flex-column align-items-center gap-1">
+            <div class="timeline-line flex-grow-1"></div>
+            <div class="icon-size-2 rounded-circle bg-black"></div>
+            <div class="timeline-line flex-grow-1"></div>
+          </div>
+          <div class="py-3">
+            <p class="text-dark-custom fw-medium m-0">4. Rigorous Testing and Validation</p>
+            <p class="text-secondary-custom m-0">
+              We conduct thorough end-to-end testing, including unit tests for each tool and validation of the context handling, to ensure the integrated
+              solution is reliable, secure, and functions flawlessly.
+            </p>
+          </div>
+          <!-- Step 5 -->
+          <div class="d-flex flex-column align-items-center gap-1 pb-3">
+            <div class="timeline-line flex-grow-1"></div>
+            <div class="icon-size-2 rounded-circle bg-black"></div>
+          </div>
+          <div class="py-3">
+            <p class="text-dark-custom fw-medium m-0">5. Deployment and Monitoring</p>
+            <p class="text-secondary-custom m-0">
+              After successful testing, we deploy the integrated solution with minimal disruption. We provide ongoing monitoring and support to ensure
+              continued performance, efficiency, and success.
+            </p>
+          </div>
+        </div>
+
+        <h2 class="text-dark-custom fs-22px fw-bold lh-tight tracking-tight px-4 pb-3 pt-5">Pricing</h2>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3 px-4 py-3">
+          <!-- Pricing Card 1 -->
+          <div class="col">
+            <div class="d-flex flex-column gap-4 rounded-4 p-4 h-100 pricing-card">
+              <div class="d-flex flex-column gap-1">
+                <h1 class="text-dark-custom fs-6 fw-bold lh-tight">Starter</h1>
+                <p class="d-flex align-items-baseline gap-1 text-dark-custom m-0">
+                  <span class="display-6 fw-black lh-tight tracking-tighter">$99</span>
+                  <span class="fw-bold lh-tight">/month</span>
+                </p>
+              </div>
+              <button class="btn btn-light-custom"><span class="text-truncate">Get Started</span></button>
+              <div class="d-flex flex-column gap-2">
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Basic MCP Integration</span>
+                </div>
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Community Support</span>
+                </div>
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Up to 10,000 API Calls</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Pricing Card 2 -->
+          <div class="col">
+            <div class="d-flex flex-column gap-4 rounded-4 p-4 h-100 pricing-card">
+              <div class="d-flex flex-column gap-1">
+                <h1 class="text-dark-custom fs-6 fw-bold lh-tight">Pro</h1>
+                <p class="d-flex align-items-baseline gap-1 text-dark-custom m-0">
+                  <span class="display-6 fw-black lh-tight tracking-tighter">$299</span>
+                  <span class="fw-bold lh-tight">/month</span>
+                </p>
+              </div>
+              <button class="btn btn-light-custom"><span class="text-truncate">Get Started</span></button>
+              <div class="d-flex flex-column gap-2">
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Advanced MCP Integration</span>
+                </div>
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Priority Support</span>
+                </div>
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Up to 50,000 API Calls</span>
+                </div>
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Customizable Features</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Pricing Card 3 -->
+          <div class="col">
+            <div class="d-flex flex-column gap-4 rounded-4 p-4 h-100 pricing-card">
+              <div class="d-flex flex-column gap-1">
+                <h1 class="text-dark-custom fs-6 fw-bold lh-tight">Enterprise</h1>
+                <span class="display-6 fw-black lh-tight tracking-tighter">Contact Us</span>
+              </div>
+              <button class="btn btn-light-custom"><span class="text-truncate">Contact Us</span></button>
+              <div class="d-flex flex-column gap-2">
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Full-Scale MCP Integration</span>
+                </div>
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Dedicated Account Manager</span>
+                </div>
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Unlimited API Calls</span>
+                </div>
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Enterprise-Grade Security</span>
+                </div>
+                <div class="d-flex gap-3 align-items-start text-dark-custom fs-13px">
+                  <div class="pt-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16px" height="16px" fill="currentColor" viewBox="0 0 256 256">
+                      <path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"></path>
+                    </svg>
+                  </div>
+                  <span>Custom Solutions</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="d-flex flex-column justify-content-end gap-4 px-4 py-5 text-center cta-section" style="padding-top: 2.5rem; padding-bottom: 2.5rem">
+          <div class="d-flex flex-column gap-2">
+            <h1 class="text-dark-custom fw-bold lh-tight tracking-tighter" style="font-size: 32px; max-width: 720px; margin: auto">
+              Ready to Transform Your LLM Applications?
+            </h1>
+            <p class="text-dark-custom fw-normal" style="max-width: 720px; margin: auto">
+              Contact us today to learn more about our MCP integration services and how we can help you achieve your goals.
+            </p>
+          </div>
+          <div class="d-flex justify-content-center">
+            <button class="btn btn-light-custom" style="width: 200px;"><span class="text-truncate">Get Started</span></button>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="d-flex flex-column gap-4 px-4 py-5 text-center">
+          <div class="d-flex flex-wrap justify-content-center gap-4">
+            <a href="#">
+              <div class="text-secondary-custom">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M247.39,68.94A8,8,0,0,0,240,64H209.57A48.66,48.66,0,0,0,168.1,40a46.91,46.91,0,0,0-33.75,13.7A47.9,47.9,0,0,0,120,88v6.09C79.74,83.47,46.81,50.72,46.46,50.37a8,8,0,0,0-13.65,4.92c-4.31,47.79,9.57,79.77,22,98.18a110.93,110.93,0,0,0,21.88,24.2c-15.23,17.53-39.21,26.74-39.47,26.84a8,8,0,0,0-3.85,11.93c.75,1.12,3.75,5.05,11.08,8.72C53.51,229.7,65.48,232,80,232c70.67,0,129.72-54.42,135.75-124.44l29.91-29.9A8,8,0,0,0,247.39,68.94Zm-45,29.41a8,8,0,0,0-2.32,5.14C196,166.58,143.28,216,80,216c-10.56,0-18-1.4-23.22-3.08,11.51-6.25,27.56-17,37.88-32.48A8,8,0,0,0,92,169.08c-.47-.27-43.91-26.34-44-96,16,13,45.25,33.17,78.67,38.79A8,8,0,0,0,136,104V88a32,32,0,0,1,9.6-22.92A30.94,30.94,0,0,1,167.9,56c12.66.16,24.49,7.88,29.44,19.21A8,8,0,0,0,204.67,80h16Z"></path>
+                </svg>
+              </div>
+            </a>
+            <a href="#">
+              <div class="text-secondary-custom">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                  <path
+                    d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z"></path>
+                </svg>
+              </div>
+            </a>
+          </div>
+          <p class="text-secondary-custom fw-normal m-0">@2025 Designer&Developer. All rights reserved.</p>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
