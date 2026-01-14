@@ -1,8 +1,7 @@
 /**
-* Template Name: iPortfolio - v3.7.0
-* Template URL: https://bootstrapmade.com/iportfolio-bootstrap-portfolio-websites-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
+* M.Azfar Azam Portfolio Scripts
+* Author: M.Azfar Azam
+* Website: https://azfarazam122.github.io/
 */
 (function() {
   "use strict";
